@@ -1,0 +1,283 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AirplaneTimetable.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
+        x:Class="AirplaneTimetable.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AirplaneTimetable"
+		xmlns:local="clr-namespace:AirplaneTimetable.Converters"
+		
+		xmlns:models="clr-namespace:AirplaneTimetable.Models;assembly=AirplaneTimetable"
+		Background="#718598">
+	
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+	
+	<Window.Resources>
+		<local:BitmapAssetValueConverter x:Key="variableImage"/>
+		<local:DateTimeToTimeStringConverter x:Key="dateToTimeString"/>
+		<local:DateTimeToDateStringConverter x:Key="dateToDateString"/>
+	</Window.Resources>
+	<Window.Styles>
+		<Style Selector="TextBlock.c1">
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="Foreground" Value="Silver"/>
+		</Style>
+	</Window.Styles>
+	
+	<Grid RowDefinitions="100,*">
+		<Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
+		<Grid Grid.Row="0" RowDefinitions="70, *">
+			<Grid Grid.Row="0" ColumnDefinitions="340,*,3*">
+				<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+						 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+						Height="48" Width="339" VerticalAlignment="Center" Grid.Column="0" SelectedIndex="{Binding DirectionSelection}">
+					<ListBox.Styles>
+						<Style Selector="ListBoxItem[IsSelected=false] /template/ ContentPresenter">
+							<Setter Property="Background" Value="#718598"/>
+						</Style>
+						<Style Selector="ListBoxItem[IsSelected=true] /template/ ContentPresenter">
+							<Setter Property="Background" Value="#eb7501"/>
+						</Style>
+					</ListBox.Styles>
+					<ListBoxItem>
+						<Image Height="48" Width="150" Source="{Binding SourceDeparture, Converter={StaticResource variableImage}}"></Image>
+					</ListBoxItem>
+					<ListBoxItem>
+						<Image Height="48" Width="150" Source="{Binding SourceArrival, Converter={StaticResource variableImage}}"></Image>
+					</ListBoxItem>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<DockPanel/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+				</ListBox>
+				<Button HorizontalAlignment="Right" Grid.Column="1" Background="Transparent">
+					<Button.Content>
+						<DockPanel>
+							<Image Height="16" Width="16" Source="/Assets/Refresh.png"></Image>
+							<TextBlock Text=" Обновить"></TextBlock>
+						</DockPanel>
+					</Button.Content>
+				</Button>
+				<!--
+				<DockPanel>
+					<Image Source="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="150" Height="48"/>
+					<Border HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="150" Height="48" BorderBrush="Black" BorderThickness="1"/>
+				</DockPanel>
+				-->
+				<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+					VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="2" SelectedIndex="{Binding TimeSelection}">
+					<ListBox.Styles>
+						<Style Selector="ListBoxItem[IsSelected=false] /template/ ContentPresenter">
+							<Setter Property="Background" Value="#718598"/>
+						</Style>
+						<Style Selector="ListBoxItem[IsSelected=true] /template/ ContentPresenter">
+							<Setter Property="Background" Value="#eb7501"/>
+						</Style>
+					</ListBox.Styles>
+					<ListBoxItem>
+						<TextBlock HorizontalAlignment="Center" Width="50" Text="Вчера"/>
+					</ListBoxItem>
+					<ListBoxItem>
+						<TextBlock HorizontalAlignment="Center" Width="60" Text="Сегодня"/>
+					</ListBoxItem>
+					<ListBoxItem>
+						<TextBlock HorizontalAlignment="Center" Width="50" Text="Завтра"/>
+					</ListBoxItem>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<DockPanel/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+				</ListBox>
+			</Grid>
+			<Grid Grid.Row="1" ColumnDefinitions="150,*,*,*,50,*,70">
+				<TextBlock Grid.Column="0" VerticalAlignment="Center" Grid.ColumnSpan="3" Text="Рейс"/>
+				<TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding TableText}"/>
+				<TextBlock Grid.Column="2" VerticalAlignment="Center" Text="По расписанию"/>
+				<TextBlock Grid.Column="3" VerticalAlignment="Center" Text="Расчетное"/>
+				<TextBlock Grid.Column="4" VerticalAlignment="Center" Text="Сектор"/>
+				<TextBlock Grid.Column="5" VerticalAlignment="Center" Text="Статус"/>
+			</Grid>
+		</Grid>
+		</Border>
+		
+		<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Background="#323b44">
+			<ScrollViewer>
+			<ItemsControl Grid.Column="0" Items="{Binding FlightCollectionFiltered}">
+
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				
+				<ItemsControl.DataTemplates>
+					<DataTemplate DataType="{x:Type	models:FlightDepartureObject}">
+						<Expander Background="#323b44">
+							<Expander.Header>
+								<Grid ColumnDefinitions="50,30,70,*,*,*,30,*">
+									<Image Height="20" Width="20" Source="/Assets/avalonia-logo.ico"></Image>
+									<TextBlock Grid.Column="1" Text="{Binding CompanyID}"/>
+									<TextBlock Grid.Column="2" Text="{Binding FlightNumber}"/>
+									<TextBlock Grid.Column="3" FontWeight="Bold" Text="{Binding ArrivalTo}"/>
+									<TextBlock Grid.Column="4" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
+									<TextBlock Grid.Column="5" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
+									<TextBlock Grid.Column="6" Text="{Binding Gate}"/>
+									<TextBlock Grid.Column="7" Text="{Binding FlightStatus}"/>
+								</Grid>
+							</Expander.Header>
+							<Expander.Content>
+								<Border>
+									<Grid ColumnDefinitions="*,*">
+										<Image Height="80" Width="80" Source="/Assets/avalonia-logo.ico"/>
+										<Grid Grid.Column="1" RowDefinitions="20,*" >
+											<DockPanel>
+												<TextBlock Text="{Binding DepartureFrom}"/>
+												<TextBlock Text=" → "/>
+												<TextBlock Text="{Binding ArrivalTo}"/>
+											</DockPanel>
+											<Grid Grid.Row="1" RowDefinitions="*,*,*,*,*,*,*" ColumnDefinitions="200,500">
+												<DockPanel>
+													<TextBlock Classes="c1" Text="Номер рейса: "/>
+													<TextBlock Classes="c1" Text="{Binding CompanyID}"/>
+													<TextBlock Classes="c1" Text=" "/>
+													<TextBlock Classes="c1" Text="{Binding FlightNumber}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="1">
+													<TextBlock Classes="c1" Text="По расписанию: "/>
+													<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="2">
+													<TextBlock Classes="c1" Text="Расчетное время: "/>
+													<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="3">
+													<TextBlock Classes="c1" Text="Сектор: "/>
+													<TextBlock Classes="c1" Text="{Binding Gate}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="4">
+													<TextBlock Classes="c1" Text="Начало регистрации: "/>
+													<TextBlock Classes="c1" Text="{Binding RegistrationStartDate, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding RegistrationStartDate, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="5">
+													<TextBlock Classes="c1" Text="Посадка на борт: "/>
+													<TextBlock Classes="c1" Text="{Binding BoardingStartDate, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding BoardingStartDate, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="6">
+													<TextBlock Classes="c1" Text="Сектор выхода на посадку: "/>
+													<TextBlock Classes="c1" Text="{Binding BoardingGateNum}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="0" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Авиакомпания: "/>
+													<TextBlock Classes="c1" Text="{Binding CompanyName}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="1" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Тип ВС: "/>
+													<TextBlock Classes="c1" Text="{Binding AirplaneType}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="2" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Стойка регистрации:"/>
+												</DockPanel>
+												<DockPanel Grid.Row="3" Grid.Column="1">
+													<TextBlock Classes="c1" Text="{Binding RegistrationDesks}"/>
+												</DockPanel>
+											</Grid>
+										</Grid>
+									</Grid>
+								</Border>
+							</Expander.Content>
+						</Expander>
+					</DataTemplate>
+
+					<DataTemplate DataType="{x:Type	models:FlightArrivalObject}">
+						<Expander Background="#323b44" >
+							<Expander.Header>
+								<Grid ColumnDefinitions="50,30,70,*,*,*,30,*">
+									<Image Height="20" Width="20" Source="/Assets/avalonia-logo.ico"></Image>
+									<TextBlock Grid.Column="1" Text="{Binding CompanyID}"/>
+									<TextBlock Grid.Column="2" Text="{Binding FlightNumber}"/>
+									<TextBlock Grid.Column="3" FontWeight="Bold" Text="{Binding DepartureFrom}"/>
+									<TextBlock Grid.Column="4" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
+									<TextBlock Grid.Column="5" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
+									<TextBlock Grid.Column="6" Text="{Binding Gate}"/>
+									<TextBlock Grid.Column="7" Text="{Binding FlightStatus}"/>
+								</Grid>
+							</Expander.Header>
+							<Expander.Content>
+								<Grid ColumnDefinitions="*,*">
+									<Image Height="80" Width="80" Source="/Assets/avalonia-logo.ico"/>
+									<Grid Grid.Column="1" RowDefinitions="20,*" >
+										<DockPanel>
+											<TextBlock Text="{Binding DepartureFrom}"/>
+											<TextBlock Text=" → "/>
+											<TextBlock Text="{Binding ArrivalTo}"/>
+										</DockPanel>
+										<Grid Grid.Row="1" RowDefinitions="*,*,*,*,*,*,*" ColumnDefinitions="200,500">
+											<DockPanel>
+												<TextBlock Classes="c1" Text="Номер рейса: "/>
+												<TextBlock Classes="c1" Text="{Binding CompanyID}"/>
+												<TextBlock Classes="c1" Text=" "/>
+												<TextBlock Classes="c1" Text="{Binding FlightNumber}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="1">
+												<TextBlock Classes="c1" Text="По расписанию: "/>
+												<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
+												<TextBlock Classes="c1" Text=", "/>
+												<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToDateString}}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="2">
+												<TextBlock Classes="c1" Text="Расчетное время: "/>
+												<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
+												<TextBlock Classes="c1" Text=", "/>
+												<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToDateString}}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="3">
+												<TextBlock Classes="c1" Text="Сектор: "/>
+												<TextBlock Classes="c1" Text="{Binding Gate}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="0" Grid.Column="1">
+												<TextBlock Classes="c1" Text="Авиакомпания: "/>
+												<TextBlock Classes="c1" Text="{Binding CompanyName}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="1" Grid.Column="1">
+												<TextBlock Classes="c1" Text="Тип ВС: "/>
+												<TextBlock Classes="c1" Text="{Binding AirplaneType}"/>
+											</DockPanel>
+											<DockPanel Grid.Row="2" Grid.Column="1">
+												<TextBlock Classes="c1" Text="Лента выдачи багажа: "/>
+												<TextBlock Classes="c1" Text="{Binding BaggageBeltNumber}"/>
+											</DockPanel>
+										</Grid>
+									</Grid>
+								</Grid>
+							</Expander.Content>
+						</Expander>
+					</DataTemplate>
+				</ItemsControl.DataTemplates>
+				
+				
+				
+			</ItemsControl>
+			</ScrollViewer>
+			
+		</Border>
+	</Grid>
+	
+</Window>
