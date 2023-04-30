@@ -221,52 +221,54 @@
 								</Grid>
 							</Expander.Header>
 							<Expander.Content>
-								<Grid ColumnDefinitions="*,*">
-									<Image Height="80" Width="80" Source="/Assets/avalonia-logo.ico"/>
-									<Grid Grid.Column="1" RowDefinitions="20,*" >
-										<DockPanel>
-											<TextBlock Text="{Binding DepartureFrom}"/>
-											<TextBlock Text=" → "/>
-											<TextBlock Text="{Binding ArrivalTo}"/>
-										</DockPanel>
-										<Grid Grid.Row="1" RowDefinitions="*,*,*,*,*,*,*" ColumnDefinitions="200,500">
+								<Border>
+									<Grid ColumnDefinitions="*,*">
+										<Image Height="80" Width="80" Source="/Assets/avalonia-logo.ico"/>
+										<Grid Grid.Column="1" RowDefinitions="20,*" >
 											<DockPanel>
-												<TextBlock Classes="c1" Text="Номер рейса: "/>
-												<TextBlock Classes="c1" Text="{Binding CompanyID}"/>
-												<TextBlock Classes="c1" Text=" "/>
-												<TextBlock Classes="c1" Text="{Binding FlightNumber}"/>
+												<TextBlock Text="{Binding DepartureFrom}"/>
+												<TextBlock Text=" → "/>
+												<TextBlock Text="{Binding ArrivalTo}"/>
 											</DockPanel>
-											<DockPanel Grid.Row="1">
-												<TextBlock Classes="c1" Text="По расписанию: "/>
-												<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
-												<TextBlock Classes="c1" Text=", "/>
-												<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToDateString}}"/>
-											</DockPanel>
-											<DockPanel Grid.Row="2">
-												<TextBlock Classes="c1" Text="Расчетное время: "/>
-												<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
-												<TextBlock Classes="c1" Text=", "/>
-												<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToDateString}}"/>
-											</DockPanel>
-											<DockPanel Grid.Row="3">
-												<TextBlock Classes="c1" Text="Сектор: "/>
-												<TextBlock Classes="c1" Text="{Binding Gate}"/>
-											</DockPanel>
-											<DockPanel Grid.Row="0" Grid.Column="1">
-												<TextBlock Classes="c1" Text="Авиакомпания: "/>
-												<TextBlock Classes="c1" Text="{Binding CompanyName}"/>
-											</DockPanel>
-											<DockPanel Grid.Row="1" Grid.Column="1">
-												<TextBlock Classes="c1" Text="Тип ВС: "/>
-												<TextBlock Classes="c1" Text="{Binding AirplaneType}"/>
-											</DockPanel>
-											<DockPanel Grid.Row="2" Grid.Column="1">
-												<TextBlock Classes="c1" Text="Лента выдачи багажа: "/>
-												<TextBlock Classes="c1" Text="{Binding BaggageBeltNumber}"/>
-											</DockPanel>
+											<Grid Grid.Row="1" RowDefinitions="*,*,*,*,*,*,*" ColumnDefinitions="200,500">
+												<DockPanel>
+													<TextBlock Classes="c1" Text="Номер рейса: "/>
+													<TextBlock Classes="c1" Text="{Binding CompanyID}"/>
+													<TextBlock Classes="c1" Text=" "/>
+													<TextBlock Classes="c1" Text="{Binding FlightNumber}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="1">
+													<TextBlock Classes="c1" Text="По расписанию: "/>
+													<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding TimetableTime, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="2">
+													<TextBlock Classes="c1" Text="Расчетное время: "/>
+													<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToTimeString}}"/>
+													<TextBlock Classes="c1" Text=", "/>
+													<TextBlock Classes="c1" Text="{Binding ProbableTime, Converter={StaticResource dateToDateString}}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="3">
+													<TextBlock Classes="c1" Text="Сектор: "/>
+													<TextBlock Classes="c1" Text="{Binding Gate}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="0" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Авиакомпания: "/>
+													<TextBlock Classes="c1" Text="{Binding CompanyName}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="1" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Тип ВС: "/>
+													<TextBlock Classes="c1" Text="{Binding AirplaneType}"/>
+												</DockPanel>
+												<DockPanel Grid.Row="2" Grid.Column="1">
+													<TextBlock Classes="c1" Text="Лента выдачи багажа: "/>
+													<TextBlock Classes="c1" Text="{Binding BaggageBeltNumber}"/>
+												</DockPanel>
+											</Grid>
 										</Grid>
 									</Grid>
-								</Grid>
+								</Border>
 							</Expander.Content>
 						</Expander>
 					</DataTemplate>
