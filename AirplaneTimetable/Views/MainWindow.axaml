@@ -27,9 +27,11 @@
 			<Setter Property="FontSize" Value="12"/>
 		</Style>
 		<Style Selector="TextBlock">
-			<Setter Property="Foreground" Value="Silver"/>
+			<Setter Property="Foreground" Value="White"/>
 		</Style>
 	</Window.Styles>
+
+
 	
 	<Grid RowDefinitions="100,*">
 		<Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
@@ -123,6 +125,17 @@
 				<ItemsControl.DataTemplates>
 					<DataTemplate DataType="{x:Type	models:FlightDepartureObject}">
 						<Expander Background="#323b44">
+							
+							<Expander.Resources>
+								<Thickness x:Key="ExpanderContentPadding">0</Thickness>
+							</Expander.Resources>
+
+							<Expander.Styles>
+								<Style Selector="Expander /template/ ContentPresenter">
+									<Setter Property="Background" Value="#323b44"/>
+								</Style>
+							</Expander.Styles>
+							
 							<Expander.Header>
 								<Grid ColumnDefinitions="50,30,70,*,*,*,30,*">
 									<Image Height="20" Width="20" Source="{Binding CompanyImage}"></Image>
@@ -136,7 +149,8 @@
 								</Grid>
 							</Expander.Header>
 							<Expander.Content>
-								<Border>
+					
+								<Border Padding="16">
 									<Grid ColumnDefinitions="*,*">
 										<Image Height="80" Width="80" Source="{Binding CompanyImage}"/>
 										<Grid Grid.Column="1" RowDefinitions="20,*" >
@@ -207,7 +221,18 @@
 					</DataTemplate>
 
 					<DataTemplate DataType="{x:Type	models:FlightArrivalObject}">
+						
 						<Expander Background="#323b44" >
+							<Expander.Resources>
+								<Thickness x:Key="ExpanderContentPadding">0</Thickness>
+							</Expander.Resources>
+
+							<Expander.Styles>
+								<Style Selector="Expander /template/ ContentPresenter">
+									<Setter Property="Background" Value="#323b44"/>
+								</Style>
+							</Expander.Styles>
+							
 							<Expander.Header>
 								<Grid ColumnDefinitions="50,30,70,*,*,*,30,*">
 									<Image Height="20" Width="20" Source="{Binding CompanyImage}"></Image>
@@ -221,7 +246,8 @@
 								</Grid>
 							</Expander.Header>
 							<Expander.Content>
-								<Border>
+								
+								<Border Padding="16">
 									<Grid ColumnDefinitions="*,*">
 										<Image Height="80" Width="80" Source="{Binding CompanyImage}"/>
 										<Grid Grid.Column="1" RowDefinitions="20,*" >
