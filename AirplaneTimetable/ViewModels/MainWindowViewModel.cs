@@ -110,38 +110,36 @@ namespace AirplaneTimetable.ViewModels
                     .Where(x => {
                         TimeSpan ts = x.TimetableTime - todayDate;
 
-                        return (Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime < todayDate));
+                        return (Math.Abs(ts.TotalDays) < 2 && Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime < todayDate));
                     });
             if (DirectionSelection == 0 && TimeSelection == 1) //Departure today
                 FlightCollectionFiltered = flightCollection.Where(x => x.FlightType == "Departure")
                     .Where(x => {
-                        TimeSpan ts = x.TimetableTime - todayDate;
                         //System.Diagnostics.Debug.WriteLine($"Сегодня {todayDate} TimetableTime={x.TimetableTime} Разница {ts.TotalDays} Выражение {Math.Abs(ts.TotalDays) < 1}");
-                        return (Math.Abs(ts.TotalDays) < 1);
+                        return (x.TimetableTime.Day==todayDate.Day);
                     });
             if (DirectionSelection == 0 && TimeSelection == 2) //Departure tomorrow
                 FlightCollectionFiltered = flightCollection.Where(x => x.FlightType == "Departure")
                     .Where(x => {
                         TimeSpan ts = x.TimetableTime - todayDate;
-                        return (Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime > todayDate));
+                        return (Math.Abs(ts.TotalDays) < 2 && Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime > todayDate));
                     });
             if (DirectionSelection == 1 && TimeSelection == 0) //Arrival yesterday
                 FlightCollectionFiltered = flightCollection.Where(x => x.FlightType == "Arrival")
                     .Where(x => {
                         TimeSpan ts = x.TimetableTime - todayDate;
-                        return (Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime < todayDate));
+                        return (Math.Abs(ts.TotalDays) < 2 && Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime < todayDate));
                     });
             if (DirectionSelection == 1 && TimeSelection == 1) //Arrival today
                 FlightCollectionFiltered = flightCollection.Where(x => x.FlightType == "Arrival")
                     .Where(x => {
-                        TimeSpan ts = x.TimetableTime - todayDate;
-                        return (Math.Abs(ts.TotalDays) < 1);
+                        return (x.TimetableTime.Day == todayDate.Day);
                     });
             if (DirectionSelection == 1 && TimeSelection == 2) //Arrival tomorrow
                 FlightCollectionFiltered = flightCollection.Where(x => x.FlightType == "Arrival")
                     .Where(x => {
                         TimeSpan ts = x.TimetableTime - todayDate;
-                        return (Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime > todayDate));
+                        return (Math.Abs(ts.TotalDays) < 2 && Math.Abs(ts.TotalDays) > 1 && (x.TimetableTime > todayDate));
                     });
 
         }

@@ -53,8 +53,7 @@ namespace AirplaneTimetable.Models
                             var boardingStartDate = reader["BoardingStartDate"];
                             var boardingGateNum = reader["BoardingGateNum"];
 
-                            //MemoryStream imageStream = new MemoryStream(ObjectToByteArray(reader["CompanyImage"]));
-                            //Bitmap companyImage = new Bitmap(imageStream);
+                            Bitmap companyImage = new Bitmap(reader.GetStream(16));
 
                             if ((string)flightType == "Arrival") 
                             {
@@ -72,7 +71,7 @@ namespace AirplaneTimetable.Models
                                     CompanyName = (string)companyName,
                                     AirplaneType = (string)airplaneType,
                                     BaggageBeltNumber = (string)baggageBeltNumber,
-                                    //CompanyImage=companyImage
+                                    CompanyImage=companyImage
                                 });;
                             }
                             
@@ -96,7 +95,7 @@ namespace AirplaneTimetable.Models
                                     RegistrationStartDate = ConvertToDateTime((string)registrationStartDate),
                                     BoardingStartDate = ConvertToDateTime((string)boardingStartDate),
                                     BoardingGateNum = (string)boardingGateNum,
-                                    //CompanyImage=companyImage
+                                    CompanyImage=companyImage
                                 });
                             }
                             
@@ -120,7 +119,7 @@ namespace AirplaneTimetable.Models
                 int hour = Convert.ToInt32(match.Groups[4].Value);
                 int minute = Convert.ToInt32(match.Groups[5].Value);
                 int second = Convert.ToInt32(match.Groups[6].Value);
-                System.Diagnostics.Debug.WriteLine($"Время считано {year}-{month}-{day} {hour}:{minute}:{second}");
+                //System.Diagnostics.Debug.WriteLine($"Время считано {year}-{month}-{day} {hour}:{minute}:{second}");
                 return new DateTime(year, month, day, hour, minute, second);
             }
             else
@@ -128,17 +127,7 @@ namespace AirplaneTimetable.Models
                 throw new Exception("Unable to parse.");
             }
         }
-        public static byte[] ObjectToByteArray(object obj)
-        {
-            if (obj == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
-        }
+
     }
     
 }
